@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-python ./lorex/main.py \
+python ./LoREx/main.py \
   --attack badencoder \
   --dataset badencoder_cifar10_pair \
   --attack_ckpt_path ./BadEncoder/output/cifar10/stl10_backdoored_encoder/model_200.pth \
@@ -11,5 +11,6 @@ python ./lorex/main.py \
   --device cuda \
   --batch_size 128 \
   --num_workers 4 \
-  --trigger_chance 0.01 \
-  --threshold_percentile 99
+  --n_trusted 5000 \
+  --n_test 200 \
+  --output_dir ./outputs/badencoder_cifar10

@@ -1,20 +1,35 @@
+"""Attack model builders for LoREx.
+
+Each builder loads a backdoored SSL encoder checkpoint and returns an
+AttackSpec that bundles the model with its feature extraction function.
+
+Feature functions are defined in models/ and registered by SSL model type
+("simclr", "clip"), so adding a new encoder type requires only adding a new
+file in models/.
+"""
+
 from dataclasses import dataclass
 from types import SimpleNamespace
 from typing import Callable, Optional
 
 import torch
 
+from models import get_feature_fn
+
 
 @dataclass
 class AttackSpec:
+    """Everything LoREx needs to evaluate a backdoored encoder."""
     name: str
     model: torch.nn.Module
     feature_fn: Callable[[torch.nn.Module, torch.Tensor], torch.Tensor]
-    processor: Optional[object] = None
-    trigger_model: Optional[torch.nn.Module] = None
+    processor: Optional[object] = None       # e.g. CLIP image preprocessor
+    trigger_model: Optional[torch.nn.Module] = None  # e.g. INACTIVE UNet
 
 
 class ConfigTxt:
+    """Simple key=value config file parser (used by INACTIVE / DeDe)."""
+
     def __init__(self, path: str):
         self.path = path
         self.params = self._load_config()
@@ -48,14 +63,6 @@ class ConfigTxt:
             self.params[key] = value
 
 
-def _feature_fn_simclr(model, img):
-    return model.f(img)
-
-
-def _feature_fn_clip(model, img):
-    return model.visual(img)
-
-
 def build_drupe_attack(ckpt_path: str, device: torch.device) -> AttackSpec:
     from DRUPE.models import SimCLR
 
@@ -64,7 +71,7 @@ def build_drupe_attack(ckpt_path: str, device: torch.device) -> AttackSpec:
     state_dict = ckpt.get("state_dict", ckpt)
     model.load_state_dict(state_dict)
     model = model.to(device).eval()
-    return AttackSpec(name="drupe", model=model, feature_fn=_feature_fn_simclr)
+    return AttackSpec(name="drupe", model=model, feature_fn=get_feature_fn("simclr"))
 
 
 def build_badencoder_attack(ckpt_path: str, device: torch.device, usage_info: str) -> AttackSpec:
@@ -76,7 +83,7 @@ def build_badencoder_attack(ckpt_path: str, device: torch.device, usage_info: st
     state_dict = ckpt.get("state_dict", ckpt)
     model.load_state_dict(state_dict)
     model = model.to(device).eval()
-    return AttackSpec(name="badencoder", model=model, feature_fn=_feature_fn_simclr)
+    return AttackSpec(name="badencoder", model=model, feature_fn=get_feature_fn("simclr"))
 
 
 def build_badclip_attack(ckpt_path: str, device: torch.device, clip_name: str = "RN50") -> AttackSpec:
@@ -85,9 +92,15 @@ def build_badclip_attack(ckpt_path: str, device: torch.device, clip_name: str = 
     model, processor = load_clip(name=clip_name, pretrained=True)
     ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
     state_dict = ckpt.get("state_dict", ckpt)
+    # Strip DataParallel "module." prefix if present
+    if any(k.startswith("module.") for k in state_dict):
+        state_dict = {k.removeprefix("module."): v for k, v in state_dict.items()}
     model.load_state_dict(state_dict)
     model = model.to(device).eval()
-    return AttackSpec(name="badclip", model=model, feature_fn=_feature_fn_clip, processor=processor)
+    return AttackSpec(
+        name="badclip", model=model,
+        feature_fn=get_feature_fn("clip"), processor=processor,
+    )
 
 
 def build_inactive_attack(
@@ -99,6 +112,16 @@ def build_inactive_attack(
     encoder_path: Optional[str],
 ) -> AttackSpec:
     model_type = (model_type or "clip").lower().strip()
+
+    def _load_unet():
+        if not unet_path:
+            return None
+        from INACTIVE.optimize_filter.tiny_network import U_Net_tiny
+        unet = U_Net_tiny(img_ch=3, output_ch=3)
+        unet_sd = torch.load(unet_path, map_location=device, weights_only=False)
+        unet.load_state_dict(unet_sd["model_state_dict"])
+        return unet.to(device).eval()
+
     if model_type == "clip":
         if not clip_ckpt_path:
             raise ValueError("inactive clip requires --attack_ckpt_path")
@@ -109,22 +132,10 @@ def build_inactive_attack(
         state_dict = ckpt.get("state_dict", ckpt)
         model.load_state_dict(state_dict)
         model = model.to(device).eval()
-
-        trigger_model = None
-        if unet_path:
-            from INACTIVE.optimize_filter.tiny_network import U_Net_tiny
-
-            unet = U_Net_tiny(img_ch=3, output_ch=3)
-            unet_sd = torch.load(unet_path, map_location=device, weights_only=False)
-            unet.load_state_dict(unet_sd["model_state_dict"])
-            trigger_model = unet.to(device).eval()
-
         return AttackSpec(
-            name="inactive",
-            model=model,
-            feature_fn=_feature_fn_clip,
-            processor=processor,
-            trigger_model=trigger_model,
+            name="inactive", model=model,
+            feature_fn=get_feature_fn("clip"), processor=processor,
+            trigger_model=_load_unet(),
         )
 
     if model_type == "simclr":
@@ -137,24 +148,13 @@ def build_inactive_attack(
             cfg.encoder_path = encoder_path
         cfg.DEVICE = str(device)
         model = get_backdoor_encoder(cfg).to(device).eval()
-
-        trigger_model = None
-        if unet_path:
-            from INACTIVE.optimize_filter.tiny_network import U_Net_tiny
-
-            unet = U_Net_tiny(img_ch=3, output_ch=3)
-            unet_sd = torch.load(unet_path, map_location=device, weights_only=False)
-            unet.load_state_dict(unet_sd["model_state_dict"])
-            trigger_model = unet.to(device).eval()
-
         return AttackSpec(
-            name="inactive",
-            model=model,
-            feature_fn=_feature_fn_simclr,
-            trigger_model=trigger_model,
+            name="inactive", model=model,
+            feature_fn=get_feature_fn("simclr"),
+            trigger_model=_load_unet(),
         )
 
-    raise ValueError(f"Unsupported inactive model_type: {model_type}")
+    raise ValueError(f"Unsupported inactive model_type: {model_type!r}")
 
 
 def build_attack_from_args(args) -> AttackSpec:
@@ -181,4 +181,4 @@ def build_attack_from_args(args) -> AttackSpec:
             config_path=args.inactive_config_path,
             encoder_path=args.inactive_encoder_path,
         )
-    raise ValueError(f"Unsupported attack: {args.attack}")
+    raise ValueError(f"Unsupported attack: {args.attack!r}")

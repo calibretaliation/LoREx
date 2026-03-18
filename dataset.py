@@ -256,6 +256,73 @@ def build_cifar10_224_clean(
     )
 
 
+def build_imagenet_clean(
+    imagenet_val_dir: str,
+    labels_csv: str,
+    processor,
+    batch_size: int,
+    num_workers: int,
+    trusted_frac: float = 0.1,
+) -> DatasetSpec:
+    """Clean ImageNet dataset for CLIP-based encoders (non-pair).
+
+    Splits ImageNet validation into a trusted clean fraction and a mixed
+    fraction.  pair_loader=False — triggers are applied on-the-fly by the
+    attack's trigger model (e.g. INACTIVE UNet).
+    """
+    from BadCLIP.src.data import ImageLabelDataset
+    from types import SimpleNamespace
+
+    common_opts = dict(
+        eval_test_data_csv=str(labels_csv),
+        add_backdoor=False,
+        backdoor_sufi=False,
+        label="airplane",
+        patch_size=16,
+        patch_type="ours_tnature",
+        patch_location="middle",
+        tigger_pth=None,
+        patch_name=None,
+        blended_alpha=None,
+        scale=None,
+        save_files_name=None,
+        eval_test_data_dir=str(imagenet_val_dir),
+    )
+    options = SimpleNamespace(**common_opts)
+    full_dataset = ImageLabelDataset(
+        root=str(imagenet_val_dir),
+        transform=processor.process_image,
+        options=options,
+    )
+
+    n = len(full_dataset)
+    n_trusted = max(1, int(n * trusted_frac))
+    generator = torch.Generator().manual_seed(42)
+    perm = torch.randperm(n, generator=generator)
+    trusted_indices = perm[:n_trusted].tolist()
+    mixed_indices = perm[n_trusted:].tolist()
+
+    trusted_subset = Subset(full_dataset, trusted_indices)
+    mixed_subset = Subset(full_dataset, mixed_indices)
+
+    loader_kwargs = dict(
+        batch_size=batch_size,
+        num_workers=num_workers,
+        pin_memory=True,
+        drop_last=False,
+        shuffle=False,
+    )
+    trusted_loader = DataLoader(trusted_subset, **loader_kwargs)
+    mixed_loader = DataLoader(mixed_subset, **loader_kwargs)
+
+    return DatasetSpec(
+        name="imagenet_clean",
+        trusted_loader=trusted_loader,
+        mixed_loader=mixed_loader,
+        pair_loader=False,
+    )
+
+
 def build_dataset_from_args(args, attack_spec: AttackSpec) -> DatasetSpec:
     if args.dataset == "cifar10_npz_pair":
         return build_npz_pair_dataset(
@@ -292,6 +359,17 @@ def build_dataset_from_args(args, attack_spec: AttackSpec) -> DatasetSpec:
             num_workers=args.num_workers,
             trusted_frac=args.trusted_frac,
             augment=not args.no_augment,
+        )
+    if args.dataset == "imagenet_clean":
+        if attack_spec.processor is None:
+            raise ValueError("imagenet_clean requires a CLIP-compatible attack with processor")
+        return build_imagenet_clean(
+            imagenet_val_dir=args.imagenet_val_dir,
+            labels_csv=args.labels_csv,
+            processor=attack_spec.processor,
+            batch_size=args.batch_size,
+            num_workers=args.num_workers,
+            trusted_frac=args.trusted_frac,
         )
 
     raise ValueError(f"Unsupported dataset: {args.dataset}")
