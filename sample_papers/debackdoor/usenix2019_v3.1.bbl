@@ -1,0 +1,414 @@
+\begin{thebibliography}{10}
+
+\bibitem{adams1994convergence}
+Rolf Adams and Leanne Bischof.
+\newblock Seeded region growing.
+\newblock {\em IEEE Transactions on pattern analysis and machine intelligence}, 16(6):641--647, 1994.
+
+\bibitem{hammoud2024video}
+Hasan~Abed Al~Kader~Hammoud, Shuming Liu, Mohammed Alkhrashi, Fahad Albalawi, and Bernard Ghanem.
+\newblock Look listen and attack: Backdoor attacks against video action recognition.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops}, pages 3439--3450, June 2024.
+
+\bibitem{bagdasaryan20federated}
+Eugene Bagdasaryan, Andreas Veit, Yiqing Hua, Deborah Estrin, and Vitaly Shmatikov.
+\newblock How to backdoor federated learning.
+\newblock In Silvia Chiappa and Roberto Calandra, editors, {\em Proceedings of the Twenty Third International Conference on Artificial Intelligence and Statistics}, volume 108 of {\em Proceedings of Machine Learning Research}, pages 2938--2948. PMLR, 26--28 Aug 2020.
+
+\bibitem{barni2019cleanlabel}
+M.~Barni, K.~Kallas, and B.~Tondi.
+\newblock A new backdoor attack in cnns by training set corruption without label poisoning.
+\newblock In {\em 2019 IEEE International Conference on Image Processing (ICIP)}, pages 101--105, 2019.
+
+\bibitem{barreno2010security}
+Marco Barreno, Blaine Nelson, Anthony~D Joseph, and J~Doug Tygar.
+\newblock The security of machine learning.
+\newblock {\em Machine Learning}, 81:121--148, 2010.
+
+\bibitem{beyer2022vit}
+Lucas Beyer, Xiaohua Zhai, and Alexander Kolesnikov.
+\newblock Better plain vit baselines for imagenet-1k.
+\newblock {\em arXiv preprint arXiv:2205.01580}, 2022.
+
+\bibitem{bojarski2016cars}
+Mariusz Bojarski, Davide Del~Testa, Daniel Dworakowski, Bernhard Firner, Beat Flepp, Prasoon Goyal, Lawrence~D Jackel, Mathew Monfort, Urs Muller, Jiakai Zhang, et~al.
+\newblock End to end learning for self-driving cars.
+\newblock In {\em 2016 IEEE International Conference on Intelligent Transportation Systems (ITSC)}, pages 1--8. IEEE, 2016.
+
+\bibitem{simulatedann}
+Claude J.~P. Bélisle.
+\newblock Convergence theorems for a class of simulated annealing algorithms on rd.
+\newblock {\em Journal of Applied Probability}, 29(4):885--895, 1992.
+
+\bibitem{chen2018activation}
+Bryant Chen, Wilka Carvalho, Nathalie Baracaldo, Heiko Ludwig, Benjamin Edwards, Taesung Lee, Ian Molloy, and Biplav Srivastava.
+\newblock Detecting backdoor attacks on deep neural networks by activation clustering, 2018.
+
+\bibitem{chen2024audio}
+Meng Chen, Xiangyu Xu, Li~Lu, Zhongjie Ba, Feng Lin, and Kui Ren.
+\newblock Devil in the room: Triggering audio backdoors in the physical world.
+\newblock In {\em 33rd USENIX Security Symposium (USENIX Security 24)}, pages 7285--7302, Philadelphia, PA, August 2024. USENIX Association.
+
+\bibitem{chen2017targeted}
+Xinyun Chen, Chang Liu, Bo~Li, Kimberly Lu, and Dawn Song.
+\newblock Targeted backdoor attacks on deep learning systems using data poisoning, 2017.
+
+\bibitem{chen2020cloud}
+Yanjiao Chen, Xueluan Gong, Qian Wang, Xing Di, and Huayang Huang.
+\newblock Backdoor attacks and defenses for deep neural networks in outsourced cloud environments.
+\newblock {\em IEEE Network}, 34(5):141--147, 2020.
+
+\bibitem{chib1995metro}
+Siddhartha Chib and Edward Greenberg.
+\newblock Understanding the metropolis-hastings algorithm.
+\newblock {\em The American Statistician}, 49(4):327--335, 1995.
+
+\bibitem{chou2020sentinet}
+Edward Chou, Florian Tramèr, and Giancarlo Pellegrino.
+\newblock Sentinet: Detecting localized universal attacks against deep learning systems.
+\newblock In {\em 2020 IEEE Security and Privacy Workshops (SPW)}, pages 48--54, 2020.
+
+\bibitem{dai2019text}
+Jiazhu Dai, Chuanshuai Chen, and Yufeng Li.
+\newblock A backdoor attack against lstm-based text classification systems.
+\newblock {\em IEEE Access}, 7:138872--138878, 2019.
+
+\bibitem{deng2009imagenet}
+Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li~Fei-Fei.
+\newblock Imagenet: A large-scale hierarchical image database.
+\newblock In {\em 2009 IEEE Conference on Computer Vision and Pattern Recognition}, pages 248--255, 2009.
+
+\bibitem{deng2012mnist}
+Li~Deng.
+\newblock The mnist database of handwritten digit images for machine learning research.
+\newblock {\em IEEE Signal Processing Magazine}, 29(6):141--142, 2012.
+
+\bibitem{doan2020februus}
+Bao~Gia Doan, Ehsan Abbasnejad, and Damith~C. Ranasinghe.
+\newblock Februus: Input purification defense against trojan attacks on deep neural network systems.
+\newblock In {\em Annual Computer Security Applications Conference}, ACSAC '20, page 897–912, New York, NY, USA, 2020. Association for Computing Machinery.
+
+\bibitem{doan2021lira}
+Khoa Doan, Yingjie Lao, Weijie Zhao, and Ping Li.
+\newblock Lira: Learnable, imperceptible and robust backdoor attacks.
+\newblock In {\em 2021 IEEE/CVF International Conference on Computer Vision (ICCV)}, pages 11946--11956, 2021.
+
+\bibitem{dong2021black}
+Yinpeng Dong, Xiao Yang, Zhijie Deng, Tianyu Pang, Zihao Xiao, Hang Su, and Jun Zhu.
+\newblock Black-box detection of backdoor attacks with limited information and data.
+\newblock In {\em Proceedings of the IEEE/CVF International Conference on Computer Vision}, pages 16482--16491, 2021.
+
+\bibitem{dumford2020weights}
+Jacob Dumford and Walter Scheirer.
+\newblock Backdooring convolutional neural networks via targeted weight perturbations.
+\newblock In {\em 2020 IEEE International Joint Conference on Biometrics (IJCB)}, pages 1--9, 2020.
+
+\bibitem{esteva2017dermatologist}
+Andre Esteva, Brett Kuprel, Roberto~A Novoa, Justin Ko, Susan~M Swetter, Helen~M Blau, and Sebastian Thrun.
+\newblock Dermatologist-level classification of skin cancer with deep neural networks.
+\newblock {\em nature}, 542(7639):115--118, 2017.
+
+\bibitem{neurips2022tdc}
+Neural Information Processing~Systems Foundation.
+\newblock The trojan detection challenge.
+\newblock {\em NeurIPS 2022}, 2022.
+
+\bibitem{fu2023eagle}
+Chong Fu, Xuhong Zhang, Shouling Ji, Ting Wang, Peng Lin, Yanghe Feng, and Jianwei Yin.
+\newblock {FreeEagle}: Detecting complex neural trojans in {Data-Free} cases.
+\newblock In {\em 32nd USENIX Security Symposium (USENIX Security 23)}, pages 6399--6416, Anaheim, CA, August 2023. USENIX Association.
+
+\bibitem{gao2019cost}
+Hui Gao, Yunfang Chen, Wei Zhang, and Petros Nicopolitidis.
+\newblock Detection of trojaning attack on neural networks via cost of sample classification.
+\newblock {\em Sec. and Commun. Netw.}, 2019, jan 2019.
+
+\bibitem{gao2019strip}
+Yansong Gao, Change Xu, Derui Wang, Shiping Chen, Damith~C. Ranasinghe, and Surya Nepal.
+\newblock Strip: A defence against trojan attacks on deep neural networks.
+\newblock In {\em Proceedings of the 35th Annual Computer Security Applications Conference}, ACSAC '19, page 113–125, New York, NY, USA, 2019. Association for Computing Machinery.
+
+\bibitem{gu2017badnets}
+Tianyu Gu, Brendan Dolan-Gavitt, and Siddharth Garg.
+\newblock Badnets: Identifying vulnerabilities in the machine learning model supply chain.
+\newblock {\em arXiv preprint arXiv:1708.06733}, 2017.
+
+\bibitem{guo2021aeva}
+Junfeng Guo, Ang Li, and Cong Liu.
+\newblock Aeva: Black-box backdoor detection using adversarial extreme value analysis.
+\newblock In {\em International Conference on Learning Representations}, 2021.
+
+\bibitem{guo2023scale}
+Junfeng Guo, Yiming Li, Xun Chen, Hanqing Guo, Lichao Sun, and Cong Liu.
+\newblock Scale-up: An efficient black-box input-level backdoor detection via analyzing scaled prediction consistency.
+\newblock {\em arXiv preprint arXiv:2302.03251}, 2023.
+
+\bibitem{he2016deep}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and pattern recognition}, pages 770--778, 2016.
+
+\bibitem{huang2024ubainf}
+Zirui Huang, Yunlong Mao, and Sheng Zhong.
+\newblock {UBA-Inf}: Unlearning activated backdoor attack with {Influence-Driven} camouflage.
+\newblock In {\em 33rd USENIX Security Symposium (USENIX Security 24)}, pages 4211--4228, Philadelphia, PA, August 2024. USENIX Association.
+
+\bibitem{jain2022huggingface}
+Shashank~Mohan Jain.
+\newblock {\em Hugging Face}, pages 51--67.
+\newblock Apress, Berkeley, CA, 2022.
+
+\bibitem{kolouri2020litmus}
+Soheil Kolouri, Aniruddha Saha, Hamed Pirsiavash, and Heiko Hoffmann.
+\newblock Universal litmus patterns: Revealing backdoor attacks in cnns.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, June 2020.
+
+\bibitem{kortli2020facial}
+Yassin Kortli, Maher Jridi, Ayman Al~Falou, and Mohamed Atri.
+\newblock Face recognition systems: A survey.
+\newblock {\em Sensors}, 20(2), 2020.
+
+\bibitem{kraus2024labels}
+Torsten Krau{\ss}, Jasper Stang, and Alexandra Dmitrienko.
+\newblock Verify your labels! trustworthy predictions and datasets via confidence scores.
+\newblock In {\em 33rd USENIX Security Symposium (USENIX Security 24)}, pages 2955--2971, Philadelphia, PA, August 2024. USENIX Association.
+
+\bibitem{krizhevsky2009cifar}
+Alex Krizhevsky, Geoffrey Hinton, et~al.
+\newblock Learning multiple layers of features from tiny images.
+\newblock 2009.
+
+\bibitem{kwon2022multi}
+Hyun Kwon.
+\newblock Multi-model selective backdoor attack with different trigger positions.
+\newblock {\em IEICE TRANSACTIONS on Information and Systems}, 105(1):170--174, 2022.
+
+\bibitem{li2024contrastive}
+Changjiang Li, Ren Pang, Bochuan Cao, Zhaohan Xi, Jinghui Chen, Shouling Ji, and Ting Wang.
+\newblock On the difficulty of defending contrastive learning against backdoor attacks.
+\newblock In {\em 33rd USENIX Security Symposium (USENIX Security 24)}, pages 2901--2918, Philadelphia, PA, August 2024. USENIX Association.
+
+\bibitem{li2024detectfed}
+Songze Li and Yanbo Dai.
+\newblock {BackdoorIndicator}: Leveraging {OOD} data for proactive backdoor detection in federated learning.
+\newblock In {\em 33rd USENIX Security Symposium (USENIX Security 24)}, pages 4193--4210, Philadelphia, PA, August 2024. USENIX Association.
+
+\bibitem{li2022survey}
+Yiming Li, Yong Jiang, Zhifeng Li, and Shu-Tao Xia.
+\newblock Backdoor learning: A survey.
+\newblock {\em IEEE Transactions on Neural Networks and Learning Systems}, pages 1--18, 2022.
+
+\bibitem{li2021rethinking}
+Yiming Li, Tongqing Zhai, Baoyuan Wu, Yong Jiang, Zhifeng Li, and Shutao Xia.
+\newblock Rethinking the trigger of backdoor attack, 2021.
+
+\bibitem{lin2020composite}
+Junyu Lin, Lei Xu, Yingqi Liu, and Xiangyu Zhang.
+\newblock Composite backdoor attack for deep neural network by mixing existing benign features.
+\newblock In {\em Proceedings of the 2020 ACM SIGSAC Conference on Computer and Communications Security}, CCS '20, page 113–131, New York, NY, USA, 2020. Association for Computing Machinery.
+
+\bibitem{liu2024mudjacking}
+Hongbin Liu, Michael~K. Reiter, and Neil~Zhenqiang Gong.
+\newblock Mudjacking: Patching backdoor vulnerabilities in foundation models.
+\newblock In {\em 33rd USENIX Security Symposium (USENIX Security 24)}, pages 2919--2936, Philadelphia, PA, August 2024. USENIX Association.
+
+\bibitem{liu2018finepruning}
+Kang Liu, Brendan Dolan-Gavitt, and Siddharth Garg.
+\newblock Fine-pruning: Defending against backdooring attacks on deep neural networks, 2018.
+
+\bibitem{liu2019abs}
+Yingqi Liu, Wen-Chuan Lee, Guanhong Tao, Shiqing Ma, Yousra Aafer, and Xiangyu Zhang.
+\newblock Abs: Scanning neural networks for back-doors by artificial brain stimulation.
+\newblock In {\em Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communications Security}, CCS '19, page 1265–1282, New York, NY, USA, 2019. Association for Computing Machinery.
+
+\bibitem{liu2020reflect}
+Yunfei Liu, Xingjun Ma, James Bailey, and Feng Lu.
+\newblock Reflection backdoor: A natural backdoor attack on deep neural networks.
+\newblock Berlin, Heidelberg, 2020. Springer-Verlag.
+
+\bibitem{lyu2024attackfed}
+Xiaoting Lyu, Yufei Han, Wei Wang, Jingkai Liu, Yongsheng Zhu, Guangquan Xu, Jiqiang Liu, and Xiangliang Zhang.
+\newblock Lurking in the shadows: Unveiling stealthy backdoor attacks against personalized federated learning.
+\newblock In {\em 33rd USENIX Security Symposium (USENIX Security 24)}, pages 4157--4174, Philadelphia, PA, August 2024. USENIX Association.
+
+\bibitem{nguyen2021wanet}
+Tuan~Anh Nguyen and Anh~Tuan Tran.
+\newblock Wanet - imperceptible warping-based backdoor attack.
+\newblock In {\em International Conference on Learning Representations}, 2021.
+
+\bibitem{pajola2021giants}
+Luca Pajola and Mauro Conti.
+\newblock Fall of giants: How popular text-based mlaas fall against a simple evasion attack.
+\newblock In {\em 2021 IEEE European Symposium on Security and Privacy (EuroS\&P)}, pages 198--211, 2021.
+
+\bibitem{pan2023asset}
+Minzhou Pan, Yi~Zeng, Lingjuan Lyu, Xue Lin, and Ruoxi Jia.
+\newblock {ASSET}: Robust backdoor data detection across a multiplicity of deep learning paradigms.
+\newblock In {\em 32nd USENIX Security Symposium (USENIX Security 23)}, pages 2725--2742, Anaheim, CA, August 2023. USENIX Association.
+
+\bibitem{qi2023proactive}
+Xiangyu Qi, Tinghao Xie, Jiachen~T. Wang, Tong Wu, Saeed Mahloujifar, and Prateek Mittal.
+\newblock Towards a proactive {ML} approach for detecting backdoor poison samples.
+\newblock In {\em 32nd USENIX Security Symposium (USENIX Security 23)}, pages 1685--1702, Anaheim, CA, August 2023. USENIX Association.
+
+\bibitem{ribeiro2015mlaas}
+Mauro Ribeiro, Katarina Grolinger, and Miriam~A.M. Capretz.
+\newblock Mlaas: Machine learning as a service.
+\newblock In {\em 2015 IEEE 14th International Conference on Machine Learning and Applications (ICMLA)}, pages 896--902, 2015.
+
+\bibitem{saha2020hidden}
+Aniruddha Saha, Akshayvarun Subramanya, and Hamed Pirsiavash.
+\newblock Hidden trigger backdoor attacks.
+\newblock {\em Proceedings of the AAAI Conference on Artificial Intelligence}, 34(07):11957--11965, Apr. 2020.
+
+\bibitem{salem2020dont}
+Ahmed Salem, Michael Backes, and Yang Zhang.
+\newblock Don't trigger me! a triggerless backdoor attack against deep neural networks, 2020.
+
+\bibitem{salem2022dynamic}
+Ahmed Salem, Rui Wen, Michael Backes, Shiqing Ma, and Yang Zhang.
+\newblock Dynamic backdoor attacks against machine learning models.
+\newblock In {\em 2022 IEEE 7th European Symposium on Security and Privacy (EuroS\&P)}, pages 703--718, 2022.
+
+\bibitem{shen2021karm}
+Guangyu Shen, Yingqi Liu, Guanhong Tao, Shengwei An, Qiuling Xu, Siyuan Cheng, Shiqing Ma, and Xiangyu Zhang.
+\newblock Backdoor scanning for deep neural networks through k-arm optimization.
+\newblock In Marina Meila and Tong Zhang, editors, {\em Proceedings of the 38th International Conference on Machine Learning}, volume 139 of {\em Proceedings of Machine Learning Research}, pages 9525--9536. PMLR, 18--24 Jul 2021.
+
+\bibitem{simonyan2015vgg}
+Karen Simonyan and Andrew Zisserman.
+\newblock Very deep convolutional networks for large-scale image recognition, 2015.
+
+\bibitem{stallkamp2012gtsrb}
+Johannes Stallkamp, Marc Schlipsing, Jan Salmen, and Christian Igel.
+\newblock Man vs. computer: Benchmarking machine learning algorithms for traffic sign recognition.
+\newblock {\em Neural networks}, 32:323--332, 2012.
+
+\bibitem{styblinski1990experiments}
+MA~Styblinski and T-S Tang.
+\newblock Experiments in nonconvex optimization: stochastic approximation with function smoothing and simulated annealing.
+\newblock {\em Neural Networks}, 3(4):467--483, 1990.
+
+\bibitem{szegedy2014goingdeeperconvolutions}
+Christian Szegedy, Wei Liu, Yangqing Jia, Pierre Sermanet, Scott Reed, Dragomir Anguelov, Dumitru Erhan, Vincent Vanhoucke, and Andrew Rabinovich.
+\newblock Going deeper with convolutions, 2014.
+
+\bibitem{tao2022pixel}
+Guanhong Tao, Guangyu Shen, Yingqi Liu, Shengwei An, Qiuling Xu, Shiqing Ma, Pan Li, and Xiangyu Zhang.
+\newblock Better trigger inversion optimization in backdoor scanning.
+\newblock In {\em 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pages 13358--13368, 2022.
+
+\bibitem{tao2022natural}
+Guanhong Tao, Zhenting Wang, Siyuan Cheng, Shiqing Ma, Shengwei An, Yingqi Liu, Guangyu Shen, Zhuo Zhang, Yunshu Mao, and Xiangyu Zhang.
+\newblock Backdoor vulnerabilities in normally trained deep learning models.
+\newblock {\em arXiv preprint arXiv:2211.15929}, 2022.
+
+\bibitem{thompson2022computational}
+Neil~C. Thompson, Kristjan Greenewald, Keeheon Lee, and Gabriel~F. Manso.
+\newblock The computational limits of deep learning, 2022.
+
+\bibitem{tran2018spectral}
+Brandon Tran, Jerry Li, and Aleksander Madry.
+\newblock Spectral signatures in backdoor attacks.
+\newblock In S.~Bengio, H.~Wallach, H.~Larochelle, K.~Grauman, N.~Cesa-Bianchi, and R.~Garnett, editors, {\em Advances in Neural Information Processing Systems}, volume~31. Curran Associates, Inc., 2018.
+
+\bibitem{turner2019labelconsistent}
+Alexander Turner, Dimitris Tsipras, and Aleksander Madry.
+\newblock Label-consistent backdoor attacks, 2019.
+
+\bibitem{turner2019metropolishastings}
+Ryan Turner, Jane Hung, Eric Frank, Yunus Saatci, and Jason Yosinski.
+\newblock Metropolis-hastings generative adversarial networks, 2019.
+
+\bibitem{udeshi2022model}
+Sakshi Udeshi, Shanshan Peng, Gerald Woo, Lionell Loh, Louth Rawshan, and Sudipta Chattopadhyay.
+\newblock Model agnostic defence against backdoor attacks in machine learning, 2022.
+
+\bibitem{vanLaarhoven1987annealing}
+Peter J.~M. van Laarhoven and Emile H.~L. Aarts.
+\newblock {\em Simulated annealing}, pages 7--15.
+\newblock Springer Netherlands, Dordrecht, 1987.
+
+\bibitem{veldanda2021nnoculation}
+Akshaj~Kumar Veldanda, Kang Liu, Benjamin Tan, Prashanth Krishnamurthy, Farshad Khorrami, Ramesh Karri, Brendan Dolan-Gavitt, and Siddharth Garg.
+\newblock Nnoculation: Catching badnets in the wild.
+\newblock In {\em Proceedings of the 14th ACM Workshop on Artificial Intelligence and Security}, AISec '21, page 49–60, New York, NY, USA, 2021. Association for Computing Machinery.
+
+\bibitem{wang2019cleanse}
+Bolun Wang, Yuanshun Yao, Shawn Shan, Huiying Li, Bimal Viswanath, Haitao Zheng, and Ben~Y. Zhao.
+\newblock Neural cleanse: Identifying and mitigating backdoor attacks in neural networks.
+\newblock In {\em 2019 IEEE Symposium on Security and Privacy (SP)}, pages 707--723, 2019.
+
+\bibitem{wang2020datafree}
+Ren Wang, Gaoyuan Zhang, Sijia Liu, Pin-Yu Chen, Jinjun Xiong, and Meng Wang.
+\newblock Practical detection of trojan neural networks: Data-limited and data-free cases.
+\newblock In {\em Computer Vision – ECCV 2020: 16th European Conference, Glasgow, UK, August 23–28, 2020, Proceedings, Part XXIII}, page 222–238, Berlin, Heidelberg, 2020. Springer-Verlag.
+
+\bibitem{wang2022transfer}
+Shuo Wang, Surya Nepal, Carsten Rudolph, Marthie Grobler, Shangyu Chen, and Tianle Chen.
+\newblock Backdoor attacks against transfer learning with pre-trained deep learning models.
+\newblock {\em IEEE Transactions on Services Computing}, 15(3):1526--1539, 2022.
+
+\bibitem{wang2021reinforce}
+Yue Wang, Esha Sarkar, Wenqing Li, Michail Maniatakos, and Saif~Eddin Jabari.
+\newblock Stop-and-go: Exploring backdoor attacks on deep reinforcement learning-based traffic congestion control systems.
+\newblock {\em IEEE Transactions on Information Forensics and Security}, 16:4772--4787, 2021.
+
+\bibitem{wenger2021physical}
+Emily Wenger, Josephine Passananti, Arjun~Nitin Bhagoji, Yuanshun Yao, Haitao Zheng, and Ben~Y. Zhao.
+\newblock Backdoor attacks against deep learning systems in the physical world.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pages 6206--6215, June 2021.
+
+\bibitem{wu2021adversarial}
+Dongxian Wu and Yisen Wang.
+\newblock Adversarial neuron pruning purifies backdoored deep models, 2021.
+
+\bibitem{xu2021mntd}
+Xiaojun Xu, Qi~Wang, Huichen Li, Nikita Borisov, Carl~A. Gunter, and Bo~Li.
+\newblock Detecting ai trojans using meta neural analysis.
+\newblock In {\em 2021 IEEE Symposium on Security and Privacy (SP)}, pages 103--120, 2021.
+
+\bibitem{xue2021facial}
+Mingfu Xue, Can He, Jian Wang, and Weiqiang Liu.
+\newblock Backdoors hidden in facial features: a novel invisible backdoor attack against face recognition systems.
+\newblock {\em Peer-to-Peer Networking and Applications}, 14:1458--1474, 2021.
+
+\bibitem{xue2022resistant}
+Mingfu Xue, Xin Wang, Shichang Sun, Yushu Zhang, Jian Wang, and Weiqiang Liu.
+\newblock Compression-resistant backdoor attack against deep neural networks, 2022.
+
+\bibitem{yan2024easyllm}
+Shenao Yan, Shen Wang, Yue Duan, Hanbin Hong, Kiho Lee, Doowon Kim, and Yuan Hong.
+\newblock An {LLM-Assisted} {Easy-to-Trigger} backdoor attack on code completion models: Injecting disguised vulnerabilities against strong detection.
+\newblock In {\em 33rd USENIX Security Symposium (USENIX Security 24)}, pages 1795--1812, Philadelphia, PA, August 2024. USENIX Association.
+
+\bibitem{zagoruyko2016wide}
+Sergey Zagoruyko and Nikos Komodakis.
+\newblock Wide residual networks.
+\newblock {\em arXiv preprint arXiv:1605.07146}, 2016.
+
+\bibitem{zhang2024instructllm}
+Rui Zhang, Hongwei Li, Rui Wen, Wenbo Jiang, Yuan Zhang, Michael Backes, Yun Shen, and Yang Zhang.
+\newblock Instruction backdoor attacks against customized {LLMs}.
+\newblock In {\em 33rd USENIX Security Symposium (USENIX Security 24)}, pages 1849--1866, Philadelphia, PA, August 2024. USENIX Association.
+
+\bibitem{zhang2021graphs}
+Zaixi Zhang, Jinyuan Jia, Binghui Wang, and Neil~Zhenqiang Gong.
+\newblock Backdoor attacks to graph neural networks.
+\newblock In {\em Proceedings of the 26th ACM Symposium on Access Control Models and Technologies}, SACMAT '21, page 15–26, New York, NY, USA, 2021. Association for Computing Machinery.
+
+\bibitem{zhao2022classoriented}
+Bingyin Zhao and Yingjie Lao.
+\newblock Towards class-oriented poisoning attacks against neural networks.
+\newblock In {\em Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)}, pages 3741--3750, January 2022.
+
+\bibitem{zhao2020bridging}
+Pu~Zhao, Pin-Yu Chen, Payel Das, Karthikeyan~Natesan Ramamurthy, and Xue Lin.
+\newblock Bridging mode connectivity in loss landscapes and adversarial robustness, 2020.
+
+\bibitem{zhang2021topological}
+Songzhu Zheng, Yikai Zhang, Hubert Wagner, Mayank Goswami, and Chao Chen.
+\newblock Topological detection of trojaned neural networks.
+\newblock In M.~Ranzato, A.~Beygelzimer, Y.~Dauphin, P.S. Liang, and J.~Wortman Vaughan, editors, {\em Advances in Neural Information Processing Systems}, volume~34, pages 17258--17272. Curran Associates, Inc., 2021.
+
+\end{thebibliography}
