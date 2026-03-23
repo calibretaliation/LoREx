@@ -27,11 +27,11 @@ Example — plug in a DINO encoder:
     feat_fn = get_feature_fn("dino")
 """
 
-from typing import Callable, Type
+from typing import Callable, Type, Dict
 
 import torch
 
-_REGISTRY: dict[str, Type] = {}
+_REGISTRY: Dict[str, Type] = {}
 
 
 def register_model(name: str):

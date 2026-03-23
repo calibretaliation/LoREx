@@ -85,10 +85,10 @@ def whiten_and_pca(
     """
     mu = trusted.mean(dim=0)
     W = compute_whitening_matrix(trusted - mu, method="cholesky", ridge=1e-3)
-    tw = ((trusted - mu) @ W).numpy()
+    tw = ((trusted - mu) @ W).cpu().numpy()
     out = [tw]
     for o in others:
-        out.append(((o - mu) @ W).numpy())
+        out.append(((o - mu) @ W).cpu().numpy())
     cov = np.cov(tw.T)
     ev, evec = np.linalg.eigh(cov)
     idx = np.argsort(ev)[::-1]

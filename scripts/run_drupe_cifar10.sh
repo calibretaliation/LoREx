@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
+# Run from LoREx/ project root
 set -euo pipefail
 
-python ./LoREx/main.py \
+.venv/bin/python main.py \
   --attack drupe \
   --dataset cifar10_npz_pair \
-  --attack_ckpt_path ./DRUPE/DRUPE_results/drupe/pretrain_cifar10_sf0.2/downstream_gtsrb_t12/best.pth \
-  --trigger_path ./DRUPE/trigger/trigger_pt_white_21_10_ap_replace.npz \
-  --data_dir ./data/cifar10 \
+  --attack_ckpt_path ./attacks/DRUPE/output/cifar10/gtsrb_backdoored_encoder/model_200.pth \
+  --trigger_path ./attacks/DRUPE/trigger/trigger_pt_white_21_10_ap_replace.npz \
+  --data_dir /media/lambda/SSD1/nhat/data/cifar10 \
   --device cuda \
   --batch_size 128 \
   --num_workers 4 \

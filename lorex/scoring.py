@@ -99,4 +99,5 @@ def ms_spectral(
         top_p = np.sort(arr_p, axis=0)[-3:].mean(0)
         return top_c, top_p, arr_c, arr_p
     else:
-        raise ValueError(f"Unknown aggregation: {agg!r}. Choose from max/mean/median/p90/top3mean.")
+        raise ValueError(f"Unknown aggregation: {agg!r}. "
+                         "Choose from max/mean/median/p90/top3mean.")

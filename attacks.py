@@ -25,6 +25,7 @@ class AttackSpec:
     feature_fn: Callable[[torch.nn.Module, torch.Tensor], torch.Tensor]
     processor: Optional[object] = None       # e.g. CLIP image preprocessor
     trigger_model: Optional[torch.nn.Module] = None  # e.g. INACTIVE UNet
+    transform: Optional[Callable] = None     # standard input transform (PIL → Tensor)
 
 
 class ConfigTxt:
@@ -65,17 +66,23 @@ class ConfigTxt:
 
 def build_drupe_attack(ckpt_path: str, device: torch.device) -> AttackSpec:
     from DRUPE.models import SimCLR
+    from BadEncoder.datasets.cifar10_dataset import test_transform_cifar10
 
     model = SimCLR()
     ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
     state_dict = ckpt.get("state_dict", ckpt)
     model.load_state_dict(state_dict)
     model = model.to(device).eval()
-    return AttackSpec(name="drupe", model=model, feature_fn=get_feature_fn("simclr"))
+    return AttackSpec(
+        name="drupe", model=model,
+        feature_fn=get_feature_fn("simclr"),
+        transform=test_transform_cifar10,
+    )
 
 
 def build_badencoder_attack(ckpt_path: str, device: torch.device, usage_info: str) -> AttackSpec:
     from BadEncoder.models import get_encoder_architecture_usage
+    from BadEncoder.datasets.cifar10_dataset import test_transform_cifar10
 
     args = SimpleNamespace(encoder_usage_info=usage_info)
     model = get_encoder_architecture_usage(args)
@@ -83,7 +90,11 @@ def build_badencoder_attack(ckpt_path: str, device: torch.device, usage_info: st
     state_dict = ckpt.get("state_dict", ckpt)
     model.load_state_dict(state_dict)
     model = model.to(device).eval()
-    return AttackSpec(name="badencoder", model=model, feature_fn=get_feature_fn("simclr"))
+    return AttackSpec(
+        name="badencoder", model=model,
+        feature_fn=get_feature_fn("simclr"),
+        transform=test_transform_cifar10,
+    )
 
 
 def build_badclip_attack(ckpt_path: str, device: torch.device, clip_name: str = "RN50") -> AttackSpec:
@@ -95,12 +106,26 @@ def build_badclip_attack(ckpt_path: str, device: torch.device, clip_name: str = 
     # Strip DataParallel "module." prefix if present
     if any(k.startswith("module.") for k in state_dict):
         state_dict = {k.removeprefix("module."): v for k, v in state_dict.items()}
-    model.load_state_dict(state_dict)
+    model.load_state_dict(state_dict, strict=False)
     model = model.to(device).eval()
     return AttackSpec(
         name="badclip", model=model,
         feature_fn=get_feature_fn("clip"), processor=processor,
+        transform=processor.process_image,
     )
+
+
+def build_drupe_clip_attack(ckpt_path: str, device: torch.device, clip_name: str = "RN50") -> AttackSpec:
+    """Load a DRUPE-backdoored CLIP model.
+
+    DRUPE trains only the visual encoder, so the checkpoint contains only
+    `visual.*` keys (339 of 489 total). We load pretrained CLIP-RN50 and
+    overwrite the visual encoder weights with strict=False (text encoder keys
+    remain at their pretrained values).
+    """
+    spec = build_badclip_attack(ckpt_path, device, clip_name=clip_name)
+    spec.name = "drupe_clip"
+    return spec
 
 
 def build_inactive_attack(
@@ -136,6 +161,7 @@ def build_inactive_attack(
             name="inactive", model=model,
             feature_fn=get_feature_fn("clip"), processor=processor,
             trigger_model=_load_unet(),
+            transform=processor.process_image,
         )
 
     if model_type == "simclr":
@@ -148,10 +174,12 @@ def build_inactive_attack(
             cfg.encoder_path = encoder_path
         cfg.DEVICE = str(device)
         model = get_backdoor_encoder(cfg).to(device).eval()
+        from BadEncoder.datasets.cifar10_dataset import test_transform_cifar10
         return AttackSpec(
             name="inactive", model=model,
             feature_fn=get_feature_fn("simclr"),
             trigger_model=_load_unet(),
+            transform=test_transform_cifar10,
         )
 
     raise ValueError(f"Unsupported inactive model_type: {model_type!r}")

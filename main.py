@@ -14,7 +14,6 @@ Reference scoring implementation: tmp/ms_spectral_final.py
 """
 
 import argparse
-import json
 import sys
 from pathlib import Path
 
@@ -22,7 +21,7 @@ import numpy as np
 import torch
 
 from attacks import build_attack_from_args
-from dataset import build_dataset_from_args
+from dataset import build_dataset_from_args, build_trusted_loader
 from lorex import (
     whiten_and_pca,
     ms_spectral,
@@ -61,12 +60,53 @@ def parse_args():
     parser.add_argument(
         "--dataset", type=str, required=True,
         choices=[
+            # NPZ pair datasets (attack-specific test pairs)
             "cifar10_npz_pair",
             "badencoder_cifar10_pair",
+            "svhn_npz_pair",
+            "gtsrb_npz_pair",
+            "stl10_npz_pair",
+            # ImageNet pair datasets
             "imagenet_subset_pair",
+            "badclip_imagenet_pair",
+            # Clean datasets (trigger applied on-the-fly via UNet)
             "cifar10_224_clean",
             "imagenet_clean",
+            "custom_folder_clean",
         ],
+        help="Test dataset configuration. Controls which images are evaluated "
+             "and how triggers are applied. Independent of --trusted_dataset.",
+    )
+
+    # ── Trusted dataset (whitening matrix estimation) ────────────────────
+    # Use --trusted_dataset to specify a clean dataset that is completely
+    # independent of the attack's training / test data.  If omitted, the
+    # trusted set is drawn from --dataset itself (backward-compatible).
+    parser.add_argument(
+        "--trusted_dataset", type=str, default=None,
+        choices=["cifar10", "svhn", "gtsrb", "stl10", "imagenet",
+                 "custom_npz", "custom_folder"],
+        help="Clean dataset used to fit the whitening matrix. "
+             "Should be independent of the attack's data (e.g. use 'svhn' "
+             "when testing a CIFAR-10 attack). Default: use --dataset itself.",
+    )
+    parser.add_argument(
+        "--trusted_data_dir", type=str, default=None,
+        help="Path to the trusted dataset. For named datasets (cifar10/svhn/…): "
+             "directory containing train.npz / train_224.npz. "
+             "For custom_npz: exact path to .npz file. "
+             "For custom_folder / imagenet: ImageFolder root. "
+             "Default: <--data_dir>/<--trusted_dataset>/.",
+    )
+    parser.add_argument(
+        "--trusted_use_224", action="store_true",
+        help="Load the 224-px NPZ variant (train_224.npz) for the trusted set. "
+             "Required when using CLIP-based encoders with NPZ trusted datasets.",
+    )
+    parser.add_argument(
+        "--trusted_split", type=str, default="train",
+        choices=["train", "test"],
+        help="Which NPZ split to load for the trusted dataset (default: train).",
     )
 
     # ── Detection hyperparameters ────────────────────────────────────────
@@ -85,7 +125,11 @@ def parse_args():
     )
     parser.add_argument(
         "--n_test", type=int, default=200,
-        help="Number of test samples per class (clean / poisoned)",
+        help="Number of clean test samples",
+    )
+    parser.add_argument(
+        "--n_poison", type=int, default=None,
+        help="Number of poison test samples (default: same as --n_test)",
     )
 
     # ── Infrastructure ───────────────────────────────────────────────────
@@ -121,13 +165,24 @@ def parse_args():
     parser.add_argument("--trusted_frac", type=float, default=0.1)
     parser.add_argument("--no_augment", action="store_true")
 
+    # ── Patch trigger options (BadCLIP) ──────────────────────────────────
+    parser.add_argument("--patch_type", type=str, default="ours_tnature",
+                        help="BadCLIP trigger type (e.g. ours_tnature, random, blended)")
+    parser.add_argument("--patch_location", type=str, default="middle",
+                        help="Trigger placement (e.g. middle, random, four_corners)")
+    parser.add_argument("--patch_size", type=int, default=16,
+                        help="Trigger patch size in pixels")
+    parser.add_argument("--patch_name", type=str, default="",
+                        help="Path to optimized trigger patch image (for ours_tnature)")
+
     return parser.parse_args()
 
 
 def main():
     repo_root = Path(__file__).resolve().parent
-    if str(repo_root) not in sys.path:
-        sys.path.insert(0, str(repo_root))
+    for p in [str(repo_root), str(repo_root / "attacks"), str(repo_root / "defenses")]:
+        if p not in sys.path:
+            sys.path.insert(0, p)
 
     args = parse_args()
     set_seed(args.seed)
@@ -138,16 +193,42 @@ def main():
     fig_dir = ensure_dir(output_dir / "figures")
     metrics_dir = ensure_dir(output_dir / "metrics")
 
-    # ── Step 1: Build attack and dataset ────────────────────────────────
+    # ── Step 1: Build attack ─────────────────────────────────────────────
     attack = build_attack_from_args(args)
-    dataset = build_dataset_from_args(args, attack)
+
+    # ── Step 1b: Build trusted loader (if --trusted_dataset is specified) ─
+    # This overrides the trusted_loader embedded in the test dataset builder,
+    # ensuring the whitening matrix is estimated from a clean, independent
+    # source that the attacker did not have access to.
+    trusted_loader = None
+    if args.trusted_dataset is not None:
+        trusted_data_dir = args.trusted_data_dir or str(
+            Path(args.data_dir) / args.trusted_dataset
+        )
+        print(f"[lorex] trusted_dataset={args.trusted_dataset}  "
+              f"trusted_data_dir={trusted_data_dir}")
+        trusted_loader = build_trusted_loader(
+            trusted_dataset=args.trusted_dataset,
+            data_dir=trusted_data_dir,
+            transform=attack.transform,
+            n_trusted=args.n_trusted,
+            batch_size=args.batch_size,
+            num_workers=args.num_workers,
+            use_224=args.trusted_use_224,
+            split=args.trusted_split,
+            seed=args.seed,
+        )
+
+    # ── Step 1c: Build test dataset ──────────────────────────────────────
+    dataset = build_dataset_from_args(args, attack, trusted_loader=trusted_loader)
     model = attack.model
     feature_fn = attack.feature_fn
     n_need = args.n_trusted + args.n_test
+    n_poison = args.n_poison if args.n_poison is not None else args.n_test
 
     print(f"[lorex] attack={attack.name}  dataset={dataset.name}  device={device}")
     print(f"[lorex] k_range={k_range}  agg={args.agg}")
-    print(f"[lorex] n_trusted={args.n_trusted}  n_test={args.n_test}")
+    print(f"[lorex] n_trusted={args.n_trusted}  n_test={args.n_test}  n_poison={n_poison}")
 
     # ── Step 2: Extract trusted clean features ───────────────────────────
     print("[lorex] extracting trusted clean features ...")
@@ -181,7 +262,7 @@ def main():
     perm_c = rng.permutation(all_clean.shape[0])
     perm_p = rng.permutation(all_poison.shape[0])
     tc = all_clean[perm_c[: args.n_test]]
-    tp = all_poison[perm_p[: args.n_test]]
+    tp = all_poison[perm_p[: n_poison]]
     print(f"[lorex] test_clean: {tc.shape}  test_poison: {tp.shape}")
 
     # ── Step 4: Whiten and PCA ───────────────────────────────────────────
@@ -197,8 +278,6 @@ def main():
     # ── Step 6: Metrics ──────────────────────────────────────────────────
     m = full_metrics(clean_scores, poison_scores)
 
-    # Per-K AUC (for heatmap figure)
-    from lorex.scoring import spectral_score
     per_k_aucs = {attack.name: []}
     for ki, K in enumerate(k_range):
         auc_k = compute_auc(per_k_c[ki], per_k_p[ki])

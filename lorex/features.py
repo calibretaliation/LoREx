@@ -119,6 +119,7 @@ def extract_clean_and_poison_features_trigger(
 
         fc = F.normalize(feature_fn(model, img), dim=-1)
         poisoned_img = trigger_model(img)
+        poisoned_img = torch.clamp(poisoned_img, img.min(), img.max())
         fp = F.normalize(feature_fn(model, poisoned_img), dim=-1)
         clean_feats.append(fc)
         poison_feats.append(fp)

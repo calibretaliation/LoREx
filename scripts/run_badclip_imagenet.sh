@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
+# Run from LoREx/ project root
 set -euo pipefail
 
-python ./LoREx/main.py \
+.venv/bin/python main.py \
   --attack badclip \
-  --dataset imagenet_subset_pair \
-  --attack_ckpt_path ./BadCLIP/badclip/logs/nodefence_ours_final/checkpoints/epoch_10.pt \
-  --trigger_path ./BadCLIP/trigger/trigger_pt_white_185_24.npz \
-  --imagenet_val_dir ./BadCLIP/data/ImageNet1K/validation \
-  --labels_csv ./BadCLIP/data/ImageNet1K/validation/labels.csv \
-  --classes_py ./BadCLIP/data/ImageNet1K/validation/classes.py \
+  --dataset badclip_imagenet_pair \
+  --attack_ckpt_path ./attacks/BadCLIP/badclip/logs/nodefence_ours_final/checkpoints/epoch_10.pt \
+  --imagenet_val_dir /media/lambda/SSD1/nhat/data/imagenet/ILSVRC2012_DET_val \
+  --labels_csv ./attacks/BadCLIP/data/ImageNet1K/validation/labels.csv \
+  --patch_type ours_tnature \
+  --patch_location middle \
+  --patch_size 16 \
+  --patch_name './attacks/BadCLIP/opti_patches/tnature_eda_aug_bs64_ep50_16_middle_01_05_pos_neg_tri*500.jpg' \
   --clean_subset_frac 0.1 \
   --device cuda \
   --batch_size 64 \
