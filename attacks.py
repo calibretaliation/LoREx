@@ -98,6 +98,10 @@ def build_badencoder_attack(ckpt_path: str, device: torch.device, usage_info: st
 
 
 def build_badclip_attack(ckpt_path: str, device: torch.device, clip_name: str = "RN50") -> AttackSpec:
+    import sys, pathlib
+    _attacks_dir = str(pathlib.Path(__file__).resolve().parent / "attacks")
+    if _attacks_dir not in sys.path:
+        sys.path.insert(0, _attacks_dir)
     from BadCLIP.pkgs.openai.clip import load as load_clip
 
     model, processor = load_clip(name=clip_name, pretrained=True)
@@ -118,10 +122,9 @@ def build_badclip_attack(ckpt_path: str, device: torch.device, clip_name: str = 
 def build_drupe_clip_attack(ckpt_path: str, device: torch.device, clip_name: str = "RN50") -> AttackSpec:
     """Load a DRUPE-backdoored CLIP model.
 
-    DRUPE trains only the visual encoder, so the checkpoint contains only
-    `visual.*` keys (339 of 489 total). We load pretrained CLIP-RN50 and
-    overwrite the visual encoder weights with strict=False (text encoder keys
-    remain at their pretrained values).
+    DRUPE trains only the visual encoder but saves the full CLIP state_dict
+    (all 489 keys). We load pretrained CLIP-RN50 and overwrite with the
+    checkpoint via strict=False.
     """
     spec = build_badclip_attack(ckpt_path, device, clip_name=clip_name)
     spec.name = "drupe_clip"
@@ -150,6 +153,10 @@ def build_inactive_attack(
     if model_type == "clip":
         if not clip_ckpt_path:
             raise ValueError("inactive clip requires --attack_ckpt_path")
+        import sys, pathlib
+        _attacks_dir = str(pathlib.Path(__file__).resolve().parent / "attacks")
+        if _attacks_dir not in sys.path:
+            sys.path.insert(0, _attacks_dir)
         from BadCLIP.pkgs.openai.clip import load as load_clip
 
         model, processor = load_clip(name="RN50", pretrained=True)
@@ -210,3 +217,48 @@ def build_attack_from_args(args) -> AttackSpec:
             encoder_path=args.inactive_encoder_path,
         )
     raise ValueError(f"Unsupported attack: {args.attack!r}")
+
+def build_drupe_imagenet_attack(ckpt_path: str, device: torch.device) -> AttackSpec:
+    from DRUPE.models.imagenet_model import ImageNetResNet
+    from BadEncoder.datasets.imagenet_dataset import test_transform_imagenet
+
+    model = ImageNetResNet()
+    ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+    state_dict = ckpt.get("state_dict", ckpt)
+    model.visual.load_state_dict(state_dict)
+    model = model.to(device).eval()
+    
+    def feature_fn(m, x):
+        return m.visual(x)
+
+    return AttackSpec(
+        name="drupe_imagenet", model=model,
+        feature_fn=feature_fn,
+        transform=test_transform_imagenet,
+    )
+
+def build_drupe_imagenet_attack(ckpt_path: str, device: torch.device) -> AttackSpec:
+    from DRUPE.models.imagenet_model import ImageNetResNet
+    from torchvision import transforms
+
+    test_transform_imagenet = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+    ])
+
+    model = ImageNetResNet()
+    ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+    state_dict = ckpt.get("state_dict", ckpt)
+    model.visual.load_state_dict(state_dict)
+    model = model.to(device).eval()
+    
+    def feature_fn(m, x):
+        return m.visual(x)
+
+    return AttackSpec(
+        name="drupe_imagenet", model=model,
+        feature_fn=feature_fn,
+        transform=test_transform_imagenet,
+    )
